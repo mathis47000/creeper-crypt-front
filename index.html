@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>CreeperCrypt</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+</head>
+
+<body>
+    <header>
+        <h1>CreeperCrypt</h1>
+        <!-- Pop up to create with a password -->
+        <button>Create rooms</button>
+        <!-- Pop up to join with a password -->
+        <button>Join rooms</button>
+    </header>
+    <!-- if no rooms join display alternative screen -->
+    <div class="no-rooms">
+        <h2>No rooms available</h2>
+        <p>Be the first to create one</p>
+    </div>
+    <main>
+        <div class="message-container">
+            <!-- example to put style on it -->
+            <div class="message-box">
+                <span class="pseudo">Alex</span>
+                <span class="message">Minecraft is so cool</span>
+            </div>
+            <!-- manage message in js file -->
+        </div>
+        <div class="input-container">
+            <input type="text" placeholder="Enter your message">
+            <button>Send</button>
+        </div>
+    </main>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+        integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+        crossorigin="anonymous"></script>
+    <script src='main.js'></script>
+</body>
+
+</html>
