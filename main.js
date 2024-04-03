@@ -30,11 +30,3 @@ createRoom.addEventListener('click', () => {
 
 
 
-socket.on('message', message => {
-    // add message to chat
-    const messageBox = '<div class="message-box">'
-        + '<span class="pseudo">Alex</span>'
-        + '<span class="message">' + message + '</span></div>'
-    const messageContainer = document.querySelector('.message-container')
-    messageContainer.innerHTML += messageBox
-})
