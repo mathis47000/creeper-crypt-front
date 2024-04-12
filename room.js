@@ -1,7 +1,7 @@
 let socket = io('http://localhost:5000')
 
 const urlParams = new URLSearchParams(window.location.search)
-
+let pseudo= null;
 socket.on('connect', () => {
     console.log(socket)
     password = prompt('password')
@@ -13,6 +13,7 @@ socket.on('connect', () => {
         if (response) {
             alert('Join room success')
             // get response from server
+            pseudo = response.pseudo
             let title = document.querySelector('.title')
             title.innerText = response.roomName
             let messages = response.messages
@@ -38,9 +39,10 @@ socket.on('message', (message) => {
 })
 
 function addMessage(message) {
+    message = JSON.parse(message)
     const messageBox = '<div class="message-box">'
-        + '<span class="pseudo">Alex</span>'
-        + '<span class="message">' + message + '</span></div>'
+        + '<span class="pseudo">' + message.pseudo+ ' : </span>'
+        + '<span class="message">' + message.content + '</span></div>'
     const messageContainer = document.querySelector('.message-container')
     messageContainer.innerHTML += messageBox
 }
@@ -51,6 +53,6 @@ const sendButton = document.querySelector('.send')
 
 sendButton.addEventListener('click', () => {
     const message = document.querySelector('.input-message').value
-    socket.emit('message', { 'id': urlParams.get('room'), 'message': message })
+    socket.emit('message', { 'id': urlParams.get('room'), 'message': message, 'pseudo': pseudo })
     document.querySelector('.input-message').value = ''
 })
