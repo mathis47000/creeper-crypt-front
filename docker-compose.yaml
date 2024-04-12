@@ -1,0 +1,6 @@
+services:
+    socketpy-front:
+        container_name: creeper-crypt-front
+        build: .
+        ports:
+        - '1234:80'
