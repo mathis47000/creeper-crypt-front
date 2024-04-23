@@ -1,18 +1,40 @@
 let socket = io('http://localhost:5000')
 
 const urlParams = new URLSearchParams(window.location.search)
+let pseudo= null;
+let room= null;
 
 socket.on('connect', () => {
     console.log(socket)
-    password = prompt('password')
-    if (!password) {
+
+    room = urlParams.get('room')??prompt('Enter room id')
+
+
+    if (!room) {
         socket.disconnect()
+        redirectHome()
         return
     }
-    socket.emit('joinroom', { 'id': urlParams.get('room'), 'password': password }, (response) => {
+    let password;
+    if (document.referrer.includes("home")){
+        password = urlParams.get('pwd')??prompt('password')
+    }else {
+        password = prompt('password')
+    }
+
+
+    window.history.pushState({}, document.title, "/room/?room=" + room );
+
+    if (!password) {
+        socket.disconnect()
+        redirectHome()
+        return
+    }
+    socket.emit('joinroom', { 'id': room, 'password': password }, (response) => {
         if (response) {
             alert('Join room success')
             // get response from server
+            pseudo = response.pseudo
             let title = document.querySelector('.title')
             title.innerText = response.roomName
             let messages = response.messages
@@ -38,9 +60,10 @@ socket.on('message', (message) => {
 })
 
 function addMessage(message) {
+    message = JSON.parse(message)
     const messageBox = '<div class="message-box">'
-        + '<span class="pseudo">Alex</span>'
-        + '<span class="message">' + message + '</span></div>'
+        + '<span class="pseudo">' + message.pseudo+ ' : </span>'
+        + '<span class="message">' + message.content + '</span></div>'
     const messageContainer = document.querySelector('.message-container')
     messageContainer.innerHTML += messageBox
 }
@@ -51,6 +74,10 @@ const sendButton = document.querySelector('.send')
 
 sendButton.addEventListener('click', () => {
     const message = document.querySelector('.input-message').value
-    socket.emit('message', { 'id': urlParams.get('room'), 'message': message })
+    socket.emit('message', { 'id': room, 'message': message, 'pseudo': pseudo })
     document.querySelector('.input-message').value = ''
 })
+
+function redirectHome(){
+    window.location.href = window.location.origin + '/home'
+}
