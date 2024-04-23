@@ -1,0 +1,90 @@
+html { 
+    background: url('../img/sky.webp') no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    display: flex;
+    justify-content: flex-end;
+    z-index: 1;
+    position: relative;
+}
+
+.title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 200px;
+}
+
+.nightMode {
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+}
+
+.clock {
+    max-height: 40px;
+    max-width: 40px;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.message-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.input-container {
+    background: url('../img/ground.jpg');
+    background-repeat: repeat-x;
+    background-size: auto;
+    background-size: auto 100%;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.input-message {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 20px;
+    background-color: #ffffffab;
+}
+
+.send {
+    background-color: #ffffffab;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.bow{
+    max-height: 30px;
+    max-width: 30px;
+    transform: scaleX(-1);
+}
