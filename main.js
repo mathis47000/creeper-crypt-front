@@ -20,7 +20,7 @@ createRoom.addEventListener('click', () => {
                 // sleep 1s
                 setTimeout(() => {
                     // add room attribute to the url
-                    window.location.href = window.location.origin + '/room/?room=' + response.id+'&pwd='+password
+                    window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/room/?room=' + response.id+'&pwd='+password
                 }, 1000)
             } else {
                 alert('Room already exist')
@@ -33,7 +33,7 @@ const joinRoom = document.querySelector('.join-room')
 
 joinRoom.addEventListener('click', () => {
     console.log('join room')
-    window.location.href = window.location.origin + '/room/'
+    window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/room/'
 })
 
 

@@ -126,15 +126,13 @@ main {
 
     .pseudo {
         color: #fff;
-        background-color: #008000;
-        padding: 3px 10px;
-        border-radius: 10px;
+        padding: 3px 5px;
     }
 
     .message {
         color: #fff;
         flex: 1;
-        padding: 3px 10px;
+        padding: 3px 5px;
     }
 }
 
@@ -146,34 +144,38 @@ main {
     background-color: rgba(0, 0, 0, 0.5);
     overflow-y: auto;
 
-    .user {
-        display: flex;
-        justify-content: space-between;
-        border: 3px solid rgba(0, 0, 0, 0.25);
-        gap: 10px;
-        align-items: center;
-        color: #fff;
 
-        .user-info {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
 
-        .avatar {
-            aspect-ratio: 1/1;
-            max-width: 30px;
-            max-height: 30px;
-            image-rendering: pixelated;
-        }
+}
 
-        .pseudo {
-            line-height: 100%;
-            font-size: 20px;
-            padding: 0 2px 2px 2px;
-        }
-    }
+.ul-user {
+    display: flex;
+    justify-content: space-between;
+    border: 3px solid rgba(0, 0, 0, 0.25);
+    gap: 10px;
+    align-items: center;
+    color: #fff;
 
+
+}
+
+.ul-userinfo {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.ul-avatar {
+    aspect-ratio: 1/1;
+    max-width: 30px;
+    max-height: 30px;
+    image-rendering: pixelated;
+}
+
+.ul-pseudo {
+    line-height: 100%;
+    font-size: 20px;
+    padding: 0 2px 2px 2px;
 }
 
 .input-container {

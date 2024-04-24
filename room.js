@@ -3,13 +3,14 @@ let socket = io("https://project.fb-cloud.fr", {
 });
 
 const urlParams = new URLSearchParams(window.location.search)
-let pseudo= null;
-let room= null;
+let pseudo = null;
+let color = null;
+let room = null;
 
 socket.on('connect', () => {
     console.log(socket)
 
-    room = urlParams.get('room')??prompt('Enter room id')
+    room = urlParams.get('room') ?? prompt('Enter room id')
 
 
     if (!room) {
@@ -18,14 +19,14 @@ socket.on('connect', () => {
         return
     }
     let password;
-    if (document.referrer.includes("home")){
-        password = urlParams.get('pwd')??prompt('password')
-    }else {
+    if (document.referrer.includes("home")) {
+        password = urlParams.get('pwd') ?? prompt('password')
+    } else {
         password = prompt('password')
     }
 
 
-    window.history.pushState({}, document.title, "/room/?room=" + room );
+    window.history.pushState({}, document.title, "/room/?room=" + room);
 
     if (!password) {
         socket.disconnect()
@@ -37,6 +38,8 @@ socket.on('connect', () => {
             alert('Join room success')
             // get response from server
             pseudo = response.pseudo
+            color = '#' + Math.floor(Math.random() * 16777215).toString(16)
+            setUserColor(color)
             let messages = response.messages
             messages.forEach(message => {
                 addMessage(message)
@@ -61,13 +64,34 @@ socket.on('message', (message) => {
     addMessage(message)
 })
 
+function setUserColor(color) {
+    var styleElement = document.createElement('style');
+    styleElement.type = 'text/css';
+
+    styleElement.textContent = `
+    .message-box.local > .pseudo {
+        background-color: ${color}; /* Utilisation de la variable color */
+    }
+`;
+    document.head.appendChild(styleElement);
+}
+
 function addMessage(message) {
     message = JSON.parse(message)
-    const messageBox = '<div class="message-box">'
-        + '<span class="pseudo">' + message.pseudo + '</span>'
-        + '<span class="message">' + message.content + '</span></div>'
-    const messageContainer = document.querySelector('.message-container')
-    messageContainer.innerHTML += messageBox
+    if (message.content) {
+        let messageBox = null
+        if (pseudo === message.pseudo) {
+            messageBox = '<div class="message-box local">'
+                + '<span class="pseudo">' + message.pseudo + '</span>'
+                + '<span class="message">: ' + message.content + '</span></div>'
+        } else {
+            messageBox = '<div class="message-box">'
+                + '<span class="pseudo">' + message.pseudo + '</span>'
+                + '<span class="message">: ' + message.content + '</span></div>'
+        }
+        const messageContainer = document.querySelector('.message-container')
+        messageContainer.innerHTML += messageBox
+    }
 }
 
 function addInfoMessage(message) {
@@ -86,8 +110,8 @@ sendButton.addEventListener('click', () => {
     document.querySelector('.input-message').value = ''
 })
 
-function redirectHome(){
-    window.location.href = window.location.origin + '/home'
+function redirectHome() {
+    window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/home'
 }
 
 const leave = document.querySelector('.leave')
