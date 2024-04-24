@@ -10,7 +10,6 @@ body {
 
         .topbar {
             filter: brightness(.7);
-
             .mc-button {
                 filter: brightness(1.3);
             }
