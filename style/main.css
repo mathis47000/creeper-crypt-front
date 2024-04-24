@@ -54,7 +54,6 @@
 /* Style de la barre de défilement */
 /* Barre de défilement */
 ::-webkit-scrollbar {
-	width: 22px; /* Largeur de la barre de défilement */
   }
   
   /* Curseur de défilement */
