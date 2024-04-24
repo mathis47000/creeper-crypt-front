@@ -104,46 +104,44 @@ main {
     overflow-y: auto;
     display: block;
     background-color: rgba(0, 0, 0, 0.5);
-
-    .info-box {
-        display: flex;
-        flex: 1;
-        gap: 10px;
-        margin-top: 10px;
-        flex-direction: column;
-    }
-
-    .info {
-        display: block;
-        color: #FFFF55;
-    }
-
-    .message-box {
-        display: flex;
-        margin-top: 10px;
-        align-items: center;
-    }
-
-    .pseudo {
-        color: #fff;
-        padding: 3px 5px;
-    }
-
-    .message {
-        color: #fff;
-        flex: 1;
-        padding: 3px 5px;
-    }
 }
 
+.info-box {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    margin-top: 10px;
+    flex-direction: column;
+}
+
+.info {
+    display: block;
+    color: #FFFF55;
+}
+
+.message-box {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.pseudo {
+    color: #fff;
+    padding: 3px 5px;
+}
+
+.message {
+    color: #fff;
+    flex: 1;
+    padding: 3px 5px;
+}
+
+.userlist {
+    flex: .3;
     flex-direction: column;
     height: fit-content;
     background-color: rgba(0, 0, 0, 0.5);
     overflow-y: auto;
-}
-
-
-
 }
 
 .ul-user {
