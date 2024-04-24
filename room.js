@@ -111,7 +111,7 @@ sendButton.addEventListener('click', () => {
 })
 
 function redirectHome() {
-    window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/home'
+    window.location.href = window.location.origin + window.location.pathname.split('/room')[0] + '/home'
 }
 
 const leave = document.querySelector('.leave')
