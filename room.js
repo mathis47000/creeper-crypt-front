@@ -100,6 +100,12 @@ function addInfoMessage(message) {
     messageContainer.innerHTML += messageBox
 }
 
+function addInfoMessage(message) {
+    const messageBox = '<div class="info-box">' + '<span class="info">' + message + '</span></div>'
+    const messageContainer = document.querySelector('.message-container')
+    messageContainer.innerHTML += messageBox
+}
+
 // send message to room
 
 const sendButton = document.querySelector('.send')
