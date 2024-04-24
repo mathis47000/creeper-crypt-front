@@ -34,7 +34,7 @@ body {
 
 header {
     .page-title {
-        max-height: 100px;
+        max-height: 10vh;
         position: absolute;
         top: 0;
         left: 50%;
@@ -48,7 +48,7 @@ header {
         justify-content: space-around;
         align-items: center;
         position: relative;
-        height: 100px;
+        height: 10vh;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(10px);
         background: url('../img/glass.png');
