@@ -1,0 +1,227 @@
+body {
+    transition: background .5s, filter .5s;
+
+    &.light {
+        background: url('../img/sky_day.png') no-repeat center center/cover fixed;
+    }
+
+    &.dark {
+        background: url('../img/sky_night.png') no-repeat center center/cover fixed;
+
+        .topbar {
+            filter: brightness(.7);
+
+            .mc-button {
+                filter: brightness(1.3);
+            }
+        }
+
+        .input-container {
+            filter: brightness(.7);
+
+            .input-message,
+            .mc-button {
+                filter: brightness(1.3);
+            }
+        }
+    }
+
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+header {
+    .page-title {
+        max-height: 10vh;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+    }
+
+    .topbar {
+        z-index: 1;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        position: relative;
+        height: 10vh;
+        backdrop-filter: blur(10px);
+        background: url('../img/glass.png');
+        background-repeat: repeat;
+        background-size: auto 50%;
+        border-bottom: 7px solid rgba(0, 0, 0, 0.2);
+    }
+}
+
+.leave {
+    width: 200px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    flex-direction: row;
+
+    .clock {
+        aspect-ratio: 1/1;
+        max-width: 30px;
+        max-height: 30px;
+        padding: 5px;
+    }
+
+    .firework {
+        aspect-ratio: 1/1;
+        max-width: 30px;
+        max-height: 30px;
+        padding: 5px;
+
+    }
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    height: 73vh;
+    margin: 30px 30px 30px 0;
+}
+
+.message-container {
+    flex: 2;
+    box-sizing: border-box;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .info-box {
+        display: flex;
+        flex: 1;
+        gap: 10px;
+        margin-top: 10px;
+        flex-direction: column;
+    }
+
+    .info {
+        display: block;
+        color: #FFFF55;
+    }
+
+    .message-box {
+        display: flex;
+        margin-top: 10px;
+        align-items: center;
+    }
+
+    .pseudo {
+        color: #fff;
+        background-color: #008000;
+        padding: 3px 10px;
+        border-radius: 10px;
+    }
+
+    .message {
+        color: #fff;
+        flex: 1;
+        padding: 3px 10px;
+    }
+}
+
+.userlist {
+    flex: .3;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto;
+
+    .user {
+        display: flex;
+        justify-content: space-between;
+        border: 3px solid rgba(0, 0, 0, 0.25);
+        gap: 10px;
+        align-items: center;
+        color: #fff;
+
+        .user-info {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        .avatar {
+            aspect-ratio: 1/1;
+            max-width: 30px;
+            max-height: 30px;
+            image-rendering: pixelated;
+        }
+
+        .pseudo {
+            line-height: 100%;
+            font-size: 20px;
+            padding: 0 2px 2px 2px;
+        }
+    }
+
+}
+
+.input-container {
+    background: url('../img/ground.png');
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    margin-top: auto;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 20px 20px 10px 20px;
+    border-top: 15px solid #6c9c54;
+}
+
+.input-message {
+    flex: 1;
+    height: var(--btn-size);
+    padding: 0 10px;
+    border: 2px solid #ccc;
+    background-color: #000;
+    font: 12pt 'Minecraftia', sans-serif;
+    color: #fff;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+.send {
+    flex: .15;
+
+    .mc-title {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+    }
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    .icon {
+        aspect-ratio: 1/1;
+        max-width: 30px;
+        max-height: 30px;
+
+        transform: scaleX(-1);
+    }
+}

@@ -1,4 +1,6 @@
-let socket = io('http://localhost:5000')
+let socket = io("https://project.fb-cloud.fr", {
+    path: "/creeper/v1/socket.io/"
+});
 
 const urlParams = new URLSearchParams(window.location.search)
 let pseudo= null;
@@ -35,12 +37,12 @@ socket.on('connect', () => {
             alert('Join room success')
             // get response from server
             pseudo = response.pseudo
-            let title = document.querySelector('.title')
-            title.innerText = response.roomName
             let messages = response.messages
             messages.forEach(message => {
                 addMessage(message)
             })
+            addInfoMessage('Bienvenue sur CreeperCrypt !')
+            addInfoMessage('Connecté au salon : ' + response.roomName)
         } else {
             alert('Join room failed')
             socket.disconnect()
@@ -62,8 +64,14 @@ socket.on('message', (message) => {
 function addMessage(message) {
     message = JSON.parse(message)
     const messageBox = '<div class="message-box">'
-        + '<span class="pseudo">' + message.pseudo+ ' : </span>'
+        + '<span class="pseudo">' + message.pseudo + '</span>'
         + '<span class="message">' + message.content + '</span></div>'
+    const messageContainer = document.querySelector('.message-container')
+    messageContainer.innerHTML += messageBox
+}
+
+function addInfoMessage(message) {
+    const messageBox = '<div class="info-box">' + '<span class="info">' + message + '</span></div>'
     const messageContainer = document.querySelector('.message-container')
     messageContainer.innerHTML += messageBox
 }
@@ -81,3 +89,35 @@ sendButton.addEventListener('click', () => {
 function redirectHome(){
     window.location.href = window.location.origin + '/home'
 }
+
+const leave = document.querySelector('.leave')
+leave.addEventListener('click', () => {
+    redirectHome()
+})
+
+const toggle = document.querySelector('.nightModeToggle')
+toggle.addEventListener('click', () => {
+    const body = document.querySelector('body')
+    body.classList.toggle('dark')
+})
+
+//add event listener to input message
+const inputMessage = document.querySelector('.input-message')
+inputMessage.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        sendButton.click()
+    }
+})
+
+// Sélection du conteneur de messages
+const messageContainer = document.querySelector('.message-container');
+
+// Fonction pour faire défiler le conteneur vers le bas
+function scrollToBottom() {
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
+// call scrollToBottom() when a new message is added
+const observer = new MutationObserver(scrollToBottom);
+observer.observe(messageContainer, { childList: true });
+
