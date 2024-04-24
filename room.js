@@ -1,4 +1,6 @@
-let socket = io('http://localhost:5000')
+let socket = io("https://project.fb-cloud.fr", {
+    path: "/creeper/v1/socket.io/"
+});
 
 const urlParams = new URLSearchParams(window.location.search)
 let pseudo= null;
@@ -81,3 +83,22 @@ sendButton.addEventListener('click', () => {
 function redirectHome(){
     window.location.href = window.location.origin + '/home'
 }
+
+const leave = document.querySelector('.leave')
+leave.addEventListener('click', () => {
+    redirectHome()
+})
+
+const toggle = document.querySelector('.nightModeToggle')
+toggle.addEventListener('click', () => {
+    const body = document.querySelector('body')
+    body.classList.toggle('dark')
+})
+
+//add event listener to input message
+const inputMessage = document.querySelector('.input-message')
+inputMessage.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        sendButton.click()
+    }
+})

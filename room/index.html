@@ -6,31 +6,55 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>CreeperCrypt</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" type="text/css" media="screen" href="../style/main.css">
     <link rel='stylesheet' type='text/css' media='screen' href='../style/room.css'>
     <link rel="icon" type="image/x-icon" href="../img/logo-nobg.ico">
 </head>
 
-<body>
+<body class="light">
     <header>
-        <img class="title" src="../img/title.png" />
-        <button class="nightMode">
-            <img class="clock" src="../img/clock.webp" />
-        </button>
+        <img class="page-title" src="../img/title.png" />
+        <div class="topbar">
+            <div class="mc-button leave">
+                <span class="mc-title">Quitter le salon</span>
+            </div>
+            <div class="mc-button nightModeToggle">
+                <img class="mc-title clock" src="../img/clock.webp" />
+            </div>
+        </div>
+
     </header>
     <main>
-        <div class="message-container">
-            <!-- example to put style on it -->
-            <div class="message-box">
-                <span class="pseudo">Alex</span>
-                <span class="message">Minecraft is so cool</span>
+        <div class="main-container">
+            <div class="message-container">
+                <!-- example to put style on it -->
+                <div class="info-box">
+                    <span class="info">Bienvenue sur CreeperCrypt !</span>
+                    <span class="info">Connecté au salon : <span class="title"></span></span>
+                </div>
+                <div class="message-box">
+                </div>
+                <!-- manage message in js file -->
             </div>
-            <!-- manage message in js file -->
+            <div class="userlist">
+                <div class="user">
+                    <div class="user-info">
+                        <img class="avatar" src="../img/avatars/alex.png" />
+                        <span class="pseudo">Alex</span>
+                    </div>
+                </div>
+                <!-- manage user in js file -->
+            </div>
         </div>
         <div class="input-container">
-            <input class="input-message" type="text" placeholder="Enter your message">
-            <button class="send">
-                <img class="bow" src="../img/bow.webp" />
-            </button>
+            <input class="input-message" type="text" placeholder="Envoyer un message">
+            <div class="mc-button send">
+                <span class="mc-title">Envoyer
+                    <div class="icon-container">
+                        <img class="icon" src="../img/bow.webp" />
+                    </div>
+                </span>
+            </div>
         </div>
     </main>
 
