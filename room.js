@@ -37,12 +37,12 @@ socket.on('connect', () => {
             alert('Join room success')
             // get response from server
             pseudo = response.pseudo
-            let title = document.querySelector('.title')
-            title.innerText = response.roomName
             let messages = response.messages
             messages.forEach(message => {
                 addMessage(message)
             })
+            addInfoMessage('Bienvenue sur CreeperCrypt !')
+            addInfoMessage('Connecté au salon : ' + response.roomName)
         } else {
             alert('Join room failed')
             socket.disconnect()
@@ -64,8 +64,14 @@ socket.on('message', (message) => {
 function addMessage(message) {
     message = JSON.parse(message)
     const messageBox = '<div class="message-box">'
-        + '<span class="pseudo">' + message.pseudo+ ' : </span>'
+        + '<span class="pseudo">' + message.pseudo + '</span>'
         + '<span class="message">' + message.content + '</span></div>'
+    const messageContainer = document.querySelector('.message-container')
+    messageContainer.innerHTML += messageBox
+}
+
+function addInfoMessage(message) {
+    const messageBox = '<div class="info-box">' + '<span class="info">' + message + '</span></div>'
     const messageContainer = document.querySelector('.message-container')
     messageContainer.innerHTML += messageBox
 }
