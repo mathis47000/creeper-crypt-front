@@ -102,3 +102,16 @@ inputMessage.addEventListener('keydown', (e) => {
         sendButton.click()
     }
 })
+
+// Sélection du conteneur de messages
+const messageContainer = document.querySelector('.message-container');
+
+// Fonction pour faire défiler le conteneur vers le bas
+function scrollToBottom() {
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
+// call scrollToBottom() when a new message is added
+const observer = new MutationObserver(scrollToBottom);
+observer.observe(messageContainer, { childList: true });
+
