@@ -91,16 +91,17 @@ main {
 .main-container {
     display: flex;
     flex-direction: row;
+    justify-content: stretch;
     gap: 30px;
     height: 73vh;
     margin: 30px 30px 30px 0;
 }
 
 .message-container {
-    flex: 2;
     box-sizing: border-box;
     padding: 20px;
     height: 100%;
+    width: 80vw;
     overflow-y: auto;
     display: block;
     background-color: rgba(0, 0, 0, 0.5);
@@ -137,9 +138,9 @@ main {
 }
 
 .userlist {
-    flex: .3;
     flex-direction: column;
     height: fit-content;
+    width: 20vw;
     background-color: rgba(0, 0, 0, 0.5);
     overflow-y: auto;
 }
@@ -158,20 +159,21 @@ main {
 .ul-userinfo {
     display: flex;
     gap: 5px;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .ul-avatar {
     aspect-ratio: 1/1;
-    max-width: 30px;
-    max-height: 30px;
+    max-width: 27px;
+    max-height: 27px;
     image-rendering: pixelated;
 }
 
 .ul-pseudo {
     line-height: 100%;
-    font-size: 20px;
+    font-size: 24px;
     padding: 0 2px 2px 2px;
+    word-wrap: break-word;
 }
 
 .input-container {

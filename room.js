@@ -9,6 +9,10 @@ let room = null;
 
 let publicKey, privateKey = null
 
+function scrollToBottom() {
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
 socket.on('connect', () => {
     console.log(socket)
 
@@ -51,7 +55,7 @@ socket.on('connect', () => {
 
                             // get response from server
                             pseudo = response.pseudo
-                            color = '#' + Math.floor(Math.random() * 16777215).toString(16)
+                            color = '#' + Math.floor(Math.random() * 0x888888 + 0x888888).toString(16)
                             setUserColor(color)
                             let messages = response.messages
 
@@ -70,7 +74,8 @@ socket.on('connect', () => {
 
                         })
 
-                    } else {
+                        scrollToBottom()
+        } else {
                         alert('Join room failed')
                         socket.disconnect()
                         redirectHome()
@@ -92,6 +97,7 @@ socket.on('disconnect', () => {
 socket.on('message', (message) => {
     // add message to chat
     addMessage(message)
+    scrollToBottom()
 })
 
 function setUserColor(color) {
@@ -133,17 +139,59 @@ function addInfoMessage(message) {
     messageContainer.innerHTML += messageBox
 }
 
+function addTempInfoMessage(message) {
+    const messageBox = '<div class="temp info-box">' + '<span class="info">' + message + '</span></div>'
+    const messageContainer = document.querySelector('.message-container')
+    messageContainer.innerHTML += messageBox
+    setTimeout(() => {
+        const tempInfoBox = document.querySelector('.temp.info-box')
+        tempInfoBox.remove()
+    }, 5000)
+}
+
 // send message to room
 
 const sendButton = document.querySelector('.send')
 
 sendButton.addEventListener('click', () => {
-    const message = document.querySelector('.input-message').value
+    const message = document.querySelector('.input-message').value.trim()
+    if (message) {
+        if (!sendCooldown) {
     encryptData(message, publicKey).then((encryptedMessage) => {
-        socket.emit('message', {'id': room, 'message': encryptedMessage, 'pseudo': pseudo})
+                socket.emit('message', {'id': room, 'message': encryptedMessage, 'pseudo': pseudo})
     })
-    document.querySelector('.input-message').value = ''
+            document.querySelector('.input-message').value = ''
+            sendCooldownFunction()
+        } else {
+            if (countdown < 2) {
+                addTempInfoMessage('Veuillez attendre ' + countdown + ' seconde avant de renvoyer un message !')
+            } else {
+                addTempInfoMessage('Veuillez attendre ' + countdown + ' secondes avant de renvoyer un message !')
+            }
+        }
+        scrollToBottom()
+    }
 })
+
+
+
+// implement send cooldown to prevent spam
+let sendCooldown = false
+const sendCooldownTime = 3000
+// décompte
+let countdown = sendCooldownTime / 1000
+
+function sendCooldownFunction() {
+    sendCooldown = true
+    const interval = setInterval(() => {
+        countdown--
+        if (countdown <= 0) {
+            clearInterval(interval)
+            countdown = sendCooldownTime / 1000
+            sendCooldown = false
+        }
+    }, 1000)
+}
 
 function redirectHome() {
     window.location.href = window.location.origin + window.location.pathname.split('/room')[0] + '/home'
