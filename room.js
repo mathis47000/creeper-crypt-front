@@ -7,6 +7,10 @@ let pseudo = null;
 let color = null;
 let room = null;
 
+function scrollToBottom() {
+    messageContainer.scrollTop = messageContainer.scrollHeight;
+}
+
 socket.on('connect', () => {
     console.log(socket)
 
@@ -38,7 +42,7 @@ socket.on('connect', () => {
             alert('Join room success')
             // get response from server
             pseudo = response.pseudo
-            color = '#' + Math.floor(Math.random() * 16777215).toString(16)
+            color = '#' + Math.floor(Math.random() * 0x888888 + 0x888888).toString(16)
             setUserColor(color)
             let messages = response.messages
             messages.forEach(message => {
@@ -46,6 +50,7 @@ socket.on('connect', () => {
             })
             addInfoMessage('Bienvenue sur CreeperCrypt !')
             addInfoMessage('Connecté au salon : ' + response.roomName)
+            scrollToBottom()
         } else {
             alert('Join room failed')
             socket.disconnect()
@@ -62,6 +67,7 @@ socket.on('disconnect', () => {
 socket.on('message', (message) => {
     // add message to chat
     addMessage(message)
+    scrollToBottom()
 })
 
 function setUserColor(color) {
@@ -78,20 +84,19 @@ function setUserColor(color) {
 
 function addMessage(message) {
     message = JSON.parse(message)
-    if (message.content) {
-        let messageBox = null
-        if (pseudo === message.pseudo) {
-            messageBox = '<div class="message-box local">'
-                + '<span class="pseudo">' + message.pseudo + '</span>'
-                + '<span class="message">: ' + message.content + '</span></div>'
-        } else {
-            messageBox = '<div class="message-box">'
-                + '<span class="pseudo">' + message.pseudo + '</span>'
-                + '<span class="message">: ' + message.content + '</span></div>'
-        }
-        const messageContainer = document.querySelector('.message-container')
-        messageContainer.innerHTML += messageBox
+    let messageBox = null
+    if (pseudo === message.pseudo) {
+        messageBox = '<div class="message-box local">'
+            + '<span class="pseudo">' + message.pseudo + '</span>'
+            + '<span class="message">: ' + message.content + '</span></div>'
+    } else {
+        messageBox = '<div class="message-box">'
+            + '<span class="pseudo">' + message.pseudo + '</span>'
+            + '<span class="message">: ' + message.content + '</span></div>'
     }
+    const messageContainer = document.querySelector('.message-container')
+    messageContainer.innerHTML += messageBox
+
 }
 
 function addInfoMessage(message) {
@@ -100,15 +105,57 @@ function addInfoMessage(message) {
     messageContainer.innerHTML += messageBox
 }
 
+function addTempInfoMessage(message) {
+    const messageBox = '<div class="temp info-box">' + '<span class="info">' + message + '</span></div>'
+    const messageContainer = document.querySelector('.message-container')
+    messageContainer.innerHTML += messageBox
+    setTimeout(() => {
+        const tempInfoBox = document.querySelector('.temp.info-box')
+        tempInfoBox.remove()
+    }, 5000)
+}
+
 // send message to room
 
 const sendButton = document.querySelector('.send')
 
 sendButton.addEventListener('click', () => {
-    const message = document.querySelector('.input-message').value
-    socket.emit('message', { 'id': room, 'message': message, 'pseudo': pseudo })
-    document.querySelector('.input-message').value = ''
+    const message = document.querySelector('.input-message').value.trim()
+    if (message) {
+        if (!sendCooldown) {
+            socket.emit('message', { 'id': room, 'message': message, 'pseudo': pseudo })
+            document.querySelector('.input-message').value = ''
+            sendCooldownFunction()
+        } else {
+            if (countdown < 2) {
+                addTempInfoMessage('Veuillez attendre ' + countdown + ' seconde avant de renvoyer un message !')
+            } else {
+                addTempInfoMessage('Veuillez attendre ' + countdown + ' secondes avant de renvoyer un message !')
+            }
+        }
+        scrollToBottom()
+    }
 })
+
+
+
+// implement send cooldown to prevent spam
+let sendCooldown = false
+const sendCooldownTime = 3000
+// décompte
+let countdown = sendCooldownTime / 1000
+
+function sendCooldownFunction() {
+    sendCooldown = true
+    const interval = setInterval(() => {
+        countdown--
+        if (countdown <= 0) {
+            clearInterval(interval)
+            countdown = sendCooldownTime / 1000
+            sendCooldown = false
+        }
+    }, 1000)
+}
 
 function redirectHome() {
     window.location.href = window.location.origin + window.location.pathname.split('/room')[0] + '/home'
@@ -135,13 +182,3 @@ inputMessage.addEventListener('keydown', (e) => {
 
 // Sélection du conteneur de messages
 const messageContainer = document.querySelector('.message-container');
-
-// Fonction pour faire défiler le conteneur vers le bas
-function scrollToBottom() {
-    messageContainer.scrollTop = messageContainer.scrollHeight;
-}
-
-// call scrollToBottom() when a new message is added
-const observer = new MutationObserver(scrollToBottom);
-observer.observe(messageContainer, { childList: true });
-
