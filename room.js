@@ -10,32 +10,29 @@ let room = null;
 socket.on('connect', () => {
     console.log(socket)
 
-    room = urlParams.get('room') ?? prompt('Enter room id')
+    room = urlParams.get('room') ?? prompt('Entrez l\'identifiant de la salle')
 
 
     if (!room) {
         socket.disconnect()
         redirectHome()
-        return
     }
     let password;
     if (document.referrer.includes("home")) {
-        password = urlParams.get('pwd') ?? prompt('password')
+        password = urlParams.get('pwd') ?? prompt('Mot de passe')
     } else {
         password = prompt('password')
     }
 
 
-    window.history.pushState({}, document.title, "/room/?room=" + room);
+    window.history.pushState({}, document.title, window.location.href.split('/room')[0]+ "/room/?room=" + room);
 
     if (!password) {
         socket.disconnect()
         redirectHome()
-        return
     }
     socket.emit('joinroom', { 'id': room, 'password': password }, (response) => {
         if (response) {
-            alert('Join room success')
             // get response from server
             pseudo = response.pseudo
             color = '#' + Math.floor(Math.random() * 16777215).toString(16)
@@ -47,7 +44,8 @@ socket.on('connect', () => {
             addInfoMessage('Bienvenue sur CreeperCrypt !')
             addInfoMessage('Connecté au salon : ' + response.roomName)
         } else {
-            alert('Join room failed')
+            alert('Echec de connexion à la salle !')
+            redirectHome()
             socket.disconnect()
         }
     })
@@ -111,7 +109,7 @@ sendButton.addEventListener('click', () => {
 })
 
 function redirectHome() {
-    window.location.href = window.location.origin + window.location.pathname.split('/room')[0] + '/home'
+    window.location.href = window.location.href.split('/room')[0] + '/home/'
 }
 
 const leave = document.querySelector('.leave')
