@@ -47,8 +47,6 @@ socket.on('connect', () => {
                 }, (response) => {
                     if (response) {
                         importPrivateKey(response.privateKey).then((privateKeyRes) => {
-                            alert('Join room success')
-
                             // get response from server
                             pseudo = response.pseudo
                             color = '#' + Math.floor(Math.random() * 16777215).toString(16)
@@ -71,7 +69,7 @@ socket.on('connect', () => {
                         })
 
                     } else {
-                        alert('Join room failed')
+                        alert('Echec de connexion au salon')
                         socket.disconnect()
                         redirectHome()
                     }
@@ -146,7 +144,7 @@ sendButton.addEventListener('click', () => {
 })
 
 function redirectHome() {
-    window.location.href = window.location.origin + window.location.pathname.split('/room')[0] + '/home'
+    window.location.href = window.location.href.split('/room')[0] + '/home'
 }
 
 const leave = document.querySelector('.leave')
@@ -165,6 +163,39 @@ const inputMessage = document.querySelector('.input-message')
 inputMessage.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
         sendButton.click()
+    }
+})
+
+const share = document.querySelector('.share')
+share.addEventListener('click', () => {
+    const userToSend = prompt('Entrez l\'email de la personne à inviter')
+    if (userToSend) {
+        if (validateEmail(userToSend)) {
+            const password = prompt('Entrez le mot de passe du salon')
+            if (password) {
+                socket.emit('sharelink', {
+                    'email': userToSend,
+                    'id': room,
+                    'password': password,
+                    'room_url': window.location.href
+                }, (response) => {
+                    if (response) {
+                        if (response.message === 'email sent') {
+                            alert('Email envoyé \n Veuillez vérifier votre courrier indésirable')
+                        }else {
+                            alert('Erreur lors de l\'envoi de l\'email')
+                        }
+                    }else {
+                        alert('Erreur lors de l\'envoi de l\'email')
+                    }
+                })
+
+            } else {
+                alert('Email invalide')
+            }
+        } else {
+            alert('Email invalide')
+        }
     }
 })
 
@@ -252,4 +283,13 @@ async function decryptMessage(encryptedMessage, privateKey) {
     );
 
     return new TextDecoder().decode(decryptedMessage);
+}
+
+function validateEmail(mail)
+{
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
+    {
+        return true
+    }
+    return false
 }
