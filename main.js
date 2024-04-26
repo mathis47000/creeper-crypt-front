@@ -1,4 +1,7 @@
-let socket = io("http://127.0.0.1:5000");
+// let socket = io("https://project.fb-cloud.fr", {
+//     path: "/creeper/v1/socket.io/"
+// });
+let socket = io("127.0.0.1:5000");
 
 socket.on('connect', () => {
     console.log('connect')
