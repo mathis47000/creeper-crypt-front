@@ -86,17 +86,30 @@ function addMessage(message) {
     message = JSON.parse(message)
     let messageBox = null
     if (pseudo === message.pseudo) {
-        messageBox = '<div class="message-box local">'
-            + '<span class="pseudo">' + message.pseudo + '</span>'
-            + '<span class="message">: ' + message.content + '</span></div>'
+        if (message.content.startsWith('![image]')) {
+            const base64 = message.content.split('![image](')[1].replace(')', '')
+            messageBox = '<div class="message-box local">'
+                + '<span class="pseudo">' + message.pseudo + '</span>'
+                + '<span class="message"><span>:</span><img src="' + base64 + '"/></span></div>'
+        } else {
+            messageBox = '<div class="message-box local">'
+                + '<span class="pseudo">' + message.pseudo + '</span>'
+                + '<span class="message"><span>:</span>' + message.content + '</span></div>'
+        }
     } else {
-        messageBox = '<div class="message-box">'
-            + '<span class="pseudo">' + message.pseudo + '</span>'
-            + '<span class="message">: ' + message.content + '</span></div>'
+        if (message.content.startsWith('![image]')) {
+            const base64 = message.content.split('![image](')[1].replace(')', '')
+            messageBox = '<div class="message-box">'
+                + '<span class="pseudo">' + message.pseudo + '</span>'
+                + '<span class="message"><span>:</span><img src="' + base64 + '"/></span></div>'
+        } else {
+            messageBox = '<div class="message-box">'
+                + '<span class="pseudo">' + message.pseudo + '</span>'
+                + '<span class="message"><span>:</span>' + message.content + '</span></div>'
+        }
     }
     const messageContainer = document.querySelector('.message-container')
     messageContainer.innerHTML += messageBox
-
 }
 
 function addInfoMessage(message) {
@@ -122,8 +135,9 @@ const sendButton = document.querySelector('.send')
 sendButton.addEventListener('click', () => {
     const message = document.querySelector('.input-message').value.trim()
     if (message) {
+        const formattedMessage = new showdown.Converter().makeHtml(message)
         if (!sendCooldown) {
-            socket.emit('message', { 'id': room, 'message': message, 'pseudo': pseudo })
+            socket.emit('message', { 'id': room, 'message': formattedMessage, 'pseudo': pseudo })
             document.querySelector('.input-message').value = ''
             sendCooldownFunction()
         } else {
@@ -182,3 +196,50 @@ inputMessage.addEventListener('keydown', (e) => {
 
 // Sélection du conteneur de messages
 const messageContainer = document.querySelector('.message-container');
+
+// Ajout d'un écouteur d'événement pour le bouton gras
+document.querySelector('.bold').addEventListener('click', () => {
+    const inputMessage = document.querySelector('.input-message')
+    //if value is not empty add bold to the message
+    if (inputMessage.value.trim()) {
+        inputMessage.value = '**' + inputMessage.value + '**'
+    }
+    inputMessage.focus()
+});
+
+// Ajout d'un écouteur d'événement pour le bouton italique
+document.querySelector('.italic').addEventListener('click', () => {
+    const inputMessage = document.querySelector('.input-message')
+    //if value is not empty add italic to the message
+    if (inputMessage.value.trim()) {
+        inputMessage.value = '*' + inputMessage.value + '*'
+    }
+    inputMessage.focus()
+});
+
+// Ajout d'un écouteur d'événement pour le bouton Insérer une image
+document.querySelector('.image').addEventListener('click', () => {
+    // demander à l'utilisateur de sélectionner une image sur son ordinateur
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/png, image/jpeg';
+    input.click();
+    // Ajout d'un écouteur d'événement pour le changement de l'input file
+    input.addEventListener('change', () => {
+        const file = input.files[0];
+        const maxSize = 2 * 1024 * 1024; // 2MB
+        // Vérifier si le fichier est une image et sa taille ne dépasse pas la limite
+        if ((file.type === 'image/png' || file.type === 'image/jpeg') && file.size <= maxSize) {
+            // Créer un objet FileReader
+            const reader = new FileReader();
+            reader.onload = () => {
+                // Envoyer l'image au serveur
+                socket.emit('message', { 'id': room, 'message': `![image](${reader.result})`, 'pseudo': pseudo })
+                scrollToBottom()
+            };
+            reader.readAsDataURL(file);
+        } else if (file.size > maxSize) {
+            alert('La taille du fichier dépasse la limite de 2MB');
+        }
+    });
+});

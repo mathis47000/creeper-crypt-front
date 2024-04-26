@@ -123,7 +123,7 @@ main {
 .message-box {
     display: flex;
     margin-top: 10px;
-    align-items: center;
+    align-items: baseline;
 }
 
 .pseudo {
@@ -135,6 +135,19 @@ main {
     color: #fff;
     flex: 1;
     padding: 3px 5px;
+    display: flex;
+    gap: 7px;
+    p {
+        margin: 0;
+        display: inline-block;
+    }
+    * {
+        word-break: break-all;
+    }
+    img {
+        max-width: 10%;
+        height: auto;
+    }
 }
 
 .userlist {
@@ -186,6 +199,18 @@ main {
     align-items: center;
     padding: 20px 20px 10px 20px;
     border-top: 15px solid #6c9c54;
+}
+
+.mc-markdown-actions {
+    display: flex;
+    gap: 10px;
+    img {
+        aspect-ratio: 1/1;
+        max-width: 30px;
+        max-height: 30px;
+        padding: 5px;
+        image-rendering: pixelated;
+    }
 }
 
 .input-message {
