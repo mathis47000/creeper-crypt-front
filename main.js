@@ -12,28 +12,29 @@ socket.on('disconnect', () => {
 // pop up create room
 const createRoom = document.querySelector('.create-room')
 createRoom.addEventListener('click', () => {
-    const roomName = prompt('Enter room name')
-    const password = prompt('Enter password')
+    const roomName = prompt('Entrez le nom de salle ')
     if (roomName) {
-        socket.emit('createroom', { roomName, password }, (response) => {
-            if (response) {
-                // sleep 1s
-                setTimeout(() => {
-                    // add room attribute to the url
-                    window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/room/?room=' + response.id+'&pwd='+password
-                }, 1000)
-            } else {
-                alert('Room already exist')
-            }
-        })
+        const password = prompt('Saisissez le mot de passe')
+        if (password) {
+            socket.emit('createroom', {roomName, password}, (response) => {
+                if (response) {
+                    // sleep 1s
+                    setTimeout(() => {
+                        // add room attribute to the url
+                        window.location.href = window.location.href.split('/home')[0] + '/room/?room=' + response.id + '&pwd=' + password
+                    }, 1000)
+                } else {
+                    alert('Cette salle existe déjà !')
+                }
+            })
+        }
     }
 })
 
 const joinRoom = document.querySelector('.join-room')
 
 joinRoom.addEventListener('click', () => {
-    console.log('join room')
-    window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/room/'
+    window.location.href = window.location.href.split('/home')[0] + '/room/'
 })
 
 
