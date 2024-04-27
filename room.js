@@ -1,6 +1,4 @@
-let socket = io("https://project.fb-cloud.fr", {
-    path: "/creeper/v1/socket.io/"
-});
+let socket = io("http://127.0.0.1:5000");
 
 const urlParams = new URLSearchParams(window.location.search)
 let pseudo = null;
@@ -35,7 +33,7 @@ socket.on('connect', () => {
         redirectHome()
         return
     }
-    socket.emit('getpublickey', {room}, (response) => {
+    socket.emit('getpublickey', { room }, (response) => {
         if (response) {
 
             importPublicKey(response.public_key).then((publicKeyRes) => {
@@ -138,7 +136,7 @@ const sendButton = document.querySelector('.send')
 sendButton.addEventListener('click', () => {
     const message = document.querySelector('.input-message').value
     encryptData(message, publicKey).then((encryptedMessage) => {
-        socket.emit('message', {'id': room, 'message': encryptedMessage, 'pseudo': pseudo})
+        socket.emit('message', { 'id': room, 'message': encryptedMessage, 'pseudo': pseudo })
     })
     document.querySelector('.input-message').value = ''
 })
@@ -182,10 +180,10 @@ share.addEventListener('click', () => {
                     if (response) {
                         if (response.message === 'email sent') {
                             alert('Email envoyé \n Veuillez vérifier votre courrier indésirable')
-                        }else {
+                        } else {
                             alert('Erreur lors de l\'envoi de l\'email')
                         }
-                    }else {
+                    } else {
                         alert('Erreur lors de l\'envoi de l\'email')
                     }
                 })
@@ -209,7 +207,7 @@ function scrollToBottom() {
 
 // call scrollToBottom() when a new message is added
 const observer = new MutationObserver(scrollToBottom);
-observer.observe(messageContainer, {childList: true});
+observer.observe(messageContainer, { childList: true });
 
 
 function arrayBufferToBase64(buffer) {
@@ -285,10 +283,8 @@ async function decryptMessage(encryptedMessage, privateKey) {
     return new TextDecoder().decode(decryptedMessage);
 }
 
-function validateEmail(mail)
-{
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail))
-    {
+function validateEmail(mail) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
         return true
     }
     return false
