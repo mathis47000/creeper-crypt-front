@@ -1,6 +1,4 @@
-let socket = io("https://project.fb-cloud.fr", {
-    path: "/creeper/v1/socket.io/"
-});
+let socket = io("http://127.0.0.1:5000");
 
 socket.on('connect', () => {
     console.log('connect')
@@ -18,19 +16,34 @@ generateKeys().then((keys) => {
 socket.on('disconnect', () => {
     console.log('disconnect')
 })
-// pop up create room
-const createRoom = document.querySelector('.create-room')
-createRoom.addEventListener('click', async () => {
-    encryptRoomName(prompt('Enter room name'), publicKey).then((encryptedRoomNameString) => {
+
+document.getElementById('salon-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    var formData = new FormData(event.target);
+
+    var roomName = formData.get('nom-salon');
+    var password = formData.get('mot-de-passe');
+    var nombrePersonnes = formData.get('nombre-personnes');
+    var duration_hours = formData.get('duree-salon-heures');
+    var duration_minutes = formData.get('duree-salon-minutes');
+    if (duration_hours + duration_minutes == 0) {
+        alert('The duration is not valid');
+        return false;
+    }
+
+    end_time = duration_hours * 60 + duration_minutes
+
+    encryptRoomName(roomName, publicKey).then((encryptedRoomNameString) => {
         const roomName = encryptedRoomNameString
-        const roomPassword = prompt('Enter password')
+        const roomPassword = password
 
         exportKeys(publicKey, privateKey).then((keys) => {
             const publicKey = keys.publicKeyString
             const privateKey = keys.privateKeyString
 
             if (roomName) {
-                socket.emit('createroom', {roomName, roomPassword, publicKey, privateKey}, (response) => {
+                socket.emit('createroom', { roomName, roomPassword, publicKey, privateKey, end_time }, (response) => {
                     if (response) {
                         // add room attribute to the url
                         window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/room/?room=' + response.id + '&pwd=' + roomPassword
@@ -66,7 +79,7 @@ async function encryptRoomName(roomName, publicKey) {
 }
 
 async function generateKeys() {
-    const {publicKey, privateKey} = await window.crypto.subtle.generateKey(
+    const { publicKey, privateKey } = await window.crypto.subtle.generateKey(
         {
             name: "RSA-OAEP",
             modulusLength: 2048,
@@ -77,7 +90,7 @@ async function generateKeys() {
         ["encrypt", "decrypt"]
     );
 
-    return {publicKey, privateKey};
+    return { publicKey, privateKey };
 }
 
 async function exportKeys(publicKey, privateKey) {
@@ -95,7 +108,7 @@ async function exportKeys(publicKey, privateKey) {
 
     const privateKeyString = arrayBufferToBase64(exportedPrivateKey);
 
-    return {publicKeyString, privateKeyString};
+    return { publicKeyString, privateKeyString };
 }
 
 function arrayBufferToBase64(buffer) {
@@ -110,4 +123,24 @@ function base64ToArrayBuffer(base64String) {
         bytes[i] = binaryString.charCodeAt(i);
     }
     return bytes.buffer;
+}
+
+var modal = document.getElementById("myModal");
+
+var btn = document.getElementById("mc-button create-room");
+
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function () {
+    modal.style.display = "block";
+}
+
+span.onclick = function () {
+    modal.style.display = "none";
+}
+
+window.onclick = function (event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }

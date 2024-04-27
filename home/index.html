@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" type="text/css" media="screen" href="../style/main.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="../style/home.css" />
+  <link rel="icon" type="image/x-icon" href="../img/logo-nobg.ico">
 </head>
 
 <body>
@@ -17,7 +18,7 @@
       <img class="page-title" src="../img/title.png" />
       <div class="mc-menu">
         <!-- Pop up to create with a password -->
-        <div class="mc-button create-room">
+        <div class="mc-button create-room" id="mc-button create-room">
           <span class="mc-title">Nouveau salon</span>
         </div>
         <!-- Pop up to join with a password -->
@@ -27,6 +28,36 @@
       </div>
     </div>
   </header>
+
+  <div id="myModal" class="modal">
+
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form id="salon-form">
+          <label for="nom-salon">Nom du salon:</label>
+          <input type="text" id="nom-salon" name="nom-salon" required>
+  
+          <label for="mot-de-passe">Mot de passe du salon:</label>
+          <input type="password" id="mot-de-passe" name="mot-de-passe" required>
+  
+          <label for="nombre-personnes" id="nombre-personnes">Nombre de personnes pouvant accueillir le salon:</label>
+          <input type="number" id="nombre-personnes" name="nombre-personnes" required min="0">
+  
+          <label for="duree-salon-jours">Durée du salon:</label>
+          <div class="duree-salon">
+          <input type="number" id="duree-salon-heures" name="duree-salon-heures" required min="0">
+          <label for="duree-salon-heures">heure(s)</label>
+          <input type="number" id="duree-salon-minutes" name="duree-salon-minutes" required min="0">
+          <label for="duree-salon-minutes">minute(s)</label>
+          </div>
+
+  
+          <input type="submit" id="validate-room" class="validate-room" value="Soumettre">
+      </form>
+  </div>
+  
+  
+  </div>
 
   <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
     integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
