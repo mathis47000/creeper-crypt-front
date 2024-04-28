@@ -4,6 +4,8 @@ const urlParams = new URLSearchParams(window.location.search)
 let pseudo = null;
 let color = null;
 let room = null;
+let availableRooms = JSON.parse(localStorage.getItem('availableRooms')) || [];
+
 
 let publicKey, privateKey = null
 
@@ -13,11 +15,12 @@ socket.on('connect', () => {
     room = urlParams.get('room') ?? prompt('Enter room id')
 
 
-    if (!room) {
+    if (!room || !availableRooms.includes(room)) {
         socket.disconnect()
         redirectHome()
         return
     }
+
     let password;
     if (document.referrer.includes("home")) {
         password = urlParams.get('pwd') ?? prompt('password')
@@ -89,6 +92,14 @@ socket.on('message', (message) => {
     // add message to chat
     addMessage(message)
 })
+
+socket.on('close_room', (closedRoomId) => {
+    alert('Le salon a été fermé')
+    socket.disconnect();
+    redirectHome();
+    availableRooms = availableRooms.filter(roomId => roomId !== closedRoomId);
+    localStorage.setItem('availableRooms', JSON.stringify(availableRooms));
+});
 
 function setUserColor(color) {
     var styleElement = document.createElement('style');
