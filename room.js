@@ -60,7 +60,6 @@ socket.on("connect", () => {
                             setUserColor(color)
                             let messages = response.messages
 
-
                             privateKey = privateKeyRes
 
                             messages.forEach(message => {
@@ -81,7 +80,6 @@ socket.on("connect", () => {
                         redirectHome()
                     }
                 })
-                console.log(socket)
             })
         }
     })
@@ -97,6 +95,26 @@ socket.on('message', (message) => {
     // add message to chat
     addMessage(message)
 })
+
+socket.on('listUsers', (users) => {
+    const userList = document.querySelector('.userlist')
+    userList.innerHTML = '<div class="ul-user">' +
+        '<div class="ul-userinfo">' +
+        '<span class="ul-pseudo">' + JSON.parse(users.users).length + '/</span>' +
+        '<span class="ul-pseudo">' + users.limitUsers + '</span>' +
+        '</div>' +
+        '</div>'
+    JSON.parse(users.users).forEach(user => {
+        userList.innerHTML += '<div class="ul-user">' +
+            '<div class="ul-userinfo">' +
+            '<img class="ul-avatar" src="../img/avatars/alex.png" />' +
+            '<span class="ul-pseudo">' + user.pseudo + '</span>' +
+            '</div>' +
+            '</div>'
+    })
+
+})
+
 
 function setUserColor(color) {
     var styleElement = document.createElement("style");
