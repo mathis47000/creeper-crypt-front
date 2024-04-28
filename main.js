@@ -36,6 +36,7 @@ document.getElementById('salon-form').addEventListener('submit', async (event) =
     }
 
     end_time = duration_hours * 60 + duration_minutes
+    let limitUsers = nombrePersonnes
 
     encryptRoomName(roomName, publicKey).then((encryptedRoomNameString) => {
         const roomName = encryptedRoomNameString
@@ -46,7 +47,7 @@ document.getElementById('salon-form').addEventListener('submit', async (event) =
             const privateKey = keys.privateKeyString
 
             if (roomName) {
-                socket.emit('createroom', { roomName, roomPassword, publicKey, privateKey, end_time }, (response) => {
+                socket.emit('createroom', { roomName, roomPassword, publicKey, privateKey, end_time, limitUsers }, (response) => {
                     if (response) {
                         // add room attribute to the url
                         window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/room/?room=' + response.id + '&pwd=' + roomPassword
