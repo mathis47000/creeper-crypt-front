@@ -6,7 +6,6 @@ socket.on('connect', () => {
 
 let publicKey
 let privateKey
-let availableRooms = []
 
 generateKeys().then((keys) => {
     publicKey = keys.publicKey
@@ -46,8 +45,6 @@ document.getElementById('salon-form').addEventListener('submit', async (event) =
             if (roomName) {
                 socket.emit('createroom', { roomName, roomPassword, publicKey, privateKey, end_time }, (response) => {
                     if (response) {
-                        availableRooms.push(response.id)
-                        localStorage.setItem('availableRooms', JSON.stringify(availableRooms));
                         // add room attribute to the url
                         window.location.href = window.location.origin + window.location.pathname.split('/home')[0] + '/room/?room=' + response.id + '&pwd=' + roomPassword
                     } else {
