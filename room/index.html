@@ -44,7 +44,18 @@
             </div>
         </div>
         <div class="input-container">
-            <input class="input-message" type="text" placeholder="Envoyer un message">
+            <div class="mc-markdown-actions">
+                <div class="mc-button bold">
+                    <strong class="mc-title">B</strong>
+                </div>
+                <div class="mc-button italic">
+                    <i class="mc-title">I</i>
+                </div>
+                <div class="mc-button image">
+                    <img class="mc-title" src="../img/image.webp" />
+                </div>
+            </div>
+            <input class="input-message" type="text" placeholder="Envoyer un message" autofocus>
             <div class="mc-button send">
                 <span class="mc-title">Envoyer
                     <div class="icon-container">
@@ -58,6 +69,7 @@
     <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
         integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
     <script src='../room.js'></script>
 </body>
 
