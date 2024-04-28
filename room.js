@@ -100,8 +100,8 @@ socket.on('listUsers', (users) => {
     const userList = document.querySelector('.userlist')
     userList.innerHTML = '<div class="ul-user">' +
         '<div class="ul-userinfo">' +
-        '<span class="ul-pseudo">' + JSON.parse(users.users).length + '/</span>' +
-        '<span class="ul-pseudo">' + users.limitUsers + '</span>' +
+        '<span>' + JSON.parse(users.users).length + '/</span>' +
+        '<span>' + users.limitUsers + '</span>' +
         '</div>' +
         '</div>'
     JSON.parse(users.users).forEach(user => {

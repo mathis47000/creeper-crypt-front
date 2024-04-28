@@ -137,13 +137,16 @@ main {
     padding: 3px 5px;
     display: flex;
     gap: 7px;
+
     p {
         margin: 0;
         display: inline-block;
     }
+
     * {
         word-break: break-all;
     }
+
     img {
         max-height: 20vh;
         width: auto;
@@ -155,7 +158,6 @@ main {
     height: fit-content;
     width: 20vw;
     background-color: rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
 }
 
 .ul-user {
@@ -186,7 +188,10 @@ main {
     line-height: 100%;
     font-size: 24px;
     padding: 0 2px 2px 2px;
-    word-wrap: break-word;
+    max-width: 10em;
+    min-width: 8em;
+    word-break: break-all;
+
 }
 
 .input-container {
@@ -204,6 +209,7 @@ main {
 .mc-markdown-actions {
     display: flex;
     gap: 10px;
+
     img {
         aspect-ratio: 1/1;
         max-width: 30px;
