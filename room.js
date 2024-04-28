@@ -24,6 +24,7 @@ socket.on("connect", () => {
         redirectHome();
         return;
     }
+
     let password;
     if (document.referrer.includes("home")) {
         password = urlParams.get("pwd") ?? prompt("password");
@@ -96,6 +97,12 @@ socket.on('message', (message) => {
     addMessage(message)
 })
 
+socket.on('close_room', () => {
+    alert('Le salon a été fermé')
+    socket.disconnect();
+    redirectHome();
+});
+
 socket.on('listUsers', (users) => {
     const userList = document.querySelector('.userlist')
     userList.innerHTML = '<div class="ul-user">' +
@@ -114,7 +121,6 @@ socket.on('listUsers', (users) => {
     })
 
 })
-
 
 function setUserColor(color) {
     var styleElement = document.createElement("style");
