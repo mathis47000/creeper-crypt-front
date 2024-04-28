@@ -237,7 +237,7 @@ function sendCooldownFunction() {
 }
 
 function redirectHome() {
-    window.location.href = window.location.href.split("/room")[0] + "/home";
+    window.location.href = window.location.href.split("/room")[0] + "/home/";
 }
 
 const leave = document.querySelector(".leave");
