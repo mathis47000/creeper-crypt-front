@@ -1,7 +1,6 @@
-// let socket = io("https://project.fb-cloud.fr", {
-//     path: "/creeper/v1/socket.io/"
-// });
-let socket = io("127.0.0.1:5000");
+let socket = io("https://project.fb-cloud.fr", {
+    path: "/creeper/v2/socket.io/"
+});
 const urlParams = new URLSearchParams(window.location.search)
 let pseudo = null;
 let color = null;
