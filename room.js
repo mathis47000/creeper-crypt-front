@@ -389,27 +389,12 @@ document.querySelector('.italic').addEventListener('click', () => {
 
 // Ajout d'un écouteur d'événement pour le bouton Insérer une image
 document.querySelector('.image').addEventListener('click', () => {
-    // demander à l'utilisateur de sélectionner une image sur son ordinateur
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/png, image/jpeg';
-    input.click();
-    // Ajout d'un écouteur d'événement pour le changement de l'input file
-    input.addEventListener('change', () => {
-        const file = input.files[0];
-        const maxSize = 2 * 1024 * 1024; // 2MB
-        // Vérifier si le fichier est une image et sa taille ne dépasse pas la limite
-        if ((file.type === 'image/png' || file.type === 'image/jpeg') && file.size <= maxSize) {
-            // Créer un objet FileReader
-            const reader = new FileReader();
-            reader.onload = () => {
-                // Envoyer l'image au serveur
-                socket.emit('message', { 'id': room, 'message': `![image](${reader.result})`, 'pseudo': pseudo })
-                scrollToBottom()
-            };
-            reader.readAsDataURL(file);
-        } else if (file.size > maxSize) {
-            alert('La taille du fichier dépasse la limite de 2MB');
-        }
-    });
+    // demander à l'utilisateur d'entrer une URL d'image
+    const imageUrl = prompt('Entrez l\'URL de l\'image')
+    if (imageUrl) {
+        const inputMessage = document.querySelector('.input-message')
+        //if value is not empty add image to the message
+        inputMessage.value = '![image](' + imageUrl + ')'
+        inputMessage.focus()
+    }
 });

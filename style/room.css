@@ -145,8 +145,8 @@ main {
         word-break: break-all;
     }
     img {
-        max-width: 10%;
-        height: auto;
+        max-height: 20vh;
+        width: auto;
     }
 }
 
